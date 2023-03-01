@@ -1,0 +1,5 @@
+parameters:
+  - name: logicAppProjectDirectoryName
+
+variables:
+  pathToLogicAppProjectDirectory: '$(System.DefaultWorkingDirectory)/src/${{ parameters.logicAppProjectDirectoryName }}'

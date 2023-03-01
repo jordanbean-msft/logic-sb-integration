@@ -1,0 +1,20 @@
+parameters:
+  - name: environmentName
+  - name: pathToInfrastructureDirectory
+  - name: pathToBicepEnvironmentVariablesDirectory
+  - name: serviceConnectionName
+  - name: resourceGroupName
+  - name: administratorLogin
+  - name: administratorLoginPassword
+  
+steps:
+  - checkout: self
+    persistCredentials: 'true'
+  - template: ../../printEnv.yml
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: ${{ parameters.serviceConnectionName }}
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az deployment group create -g ${{ parameters.resourceGroupName }} --template-file ${{ parameters.pathToInfrastructureDirectory }}/main.bicep --parameters ${{ parameters.pathToBicepEnvironmentVariablesDirectory }}/${{ parameters.environmentName }}.parameters.json --parameters administratorLogin=${{ parameters.administratorLogin }} administratorLoginPassword=${{ parameters.administratorLoginPassword }}

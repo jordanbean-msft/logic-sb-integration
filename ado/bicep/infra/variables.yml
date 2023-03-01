@@ -1,0 +1,4 @@
+variables:
+  pathToBicepEnvironmentVariablesDirectory: $(System.DefaultWorkingDirectory)/infra/bicep/env
+  pathToAdoScriptDirectory: $(System.DefaultWorkingDirectory)/ado/bicep/infra
+  pathToInfrastructureDirectory: $(System.DefaultWorkingDirectory)/infra/bicep

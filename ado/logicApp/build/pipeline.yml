@@ -1,0 +1,27 @@
+name: build-webapp
+variables:
+  - template: ../../global.yml
+  - template: variables.yml
+    parameters:
+      webAppSolutionName: ${{ variables.webAppSolutionName }}
+trigger:
+  branches:
+    include: 
+      - main
+  paths:
+    include:
+      - ../../env/global.yml
+      - ./*
+      - ../../../src/demoWebApp/*
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - template: build.yml
+            parameters:
+              configuration: ${{ variables.configuration }}
+              artifactName: ${{ variables.artifactName }}
+              pathToLogicAppProjectDirectory: ${{ variables.pathToLogicAppProjectDirectory }}

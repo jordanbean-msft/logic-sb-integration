@@ -1,0 +1,71 @@
+name: deploy-infrastructure
+variables:
+  - template: ../../global.yml
+  - template: ../env/dev.yml
+  # - template: ../env/tst.yml
+  # - template: ../env/prd.yml
+  - template: variables.yml
+  - group: ${{ variables.devEnvironmentName }}
+trigger:
+  branches:
+    include: 
+      - main
+  paths:
+    include:
+      - ../env/*
+      - ../../infra/*
+      - ./*
+stages:
+  - stage: Dev
+    jobs:
+    - deployment: Dev_Deploy
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: ${{ variables.devEnvironmentName }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: deploy-bicep.yml
+              parameters:
+                environmentName: ${{ variables.devEnvironmentName }}
+                pathToInfrastructureDirectory: ${{ variables.pathtoInfrastructureDirectory }}
+                pathToBicepEnvironmentVariablesDirectory: ${{ variables.pathToBicepEnvironmentVariablesDirectory }}
+                serviceConnectionName: ${{ variables.devServiceConnectionName }}
+                resourceGroupName: ${{ variables.devResourceGroupName }}
+  # - stage: Tst
+  #   dependsOn: Dev 
+  #   jobs:
+  #   - deployment: Tst_Deploy
+  #     pool:
+  #       vmImage: 'windows-latest'
+  #     environment: ${{ variables.tstEnvironmentName }}
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           - template: deploy-bicep.yml
+  #             parameters:
+  #               environmentName: ${{ variables.tstEnvironmentName }}
+  #               pathToInfrastructureDirectory: ${{ variables.pathtoInfrastructureDirectory }}
+  #               pathToBicepEnvironmentVariablesDirectory: ${{ variables.pathToBicepEnvironmentVariablesDirectory }}
+  #               serviceConnectionName: ${{ variables.tstServiceConnectionName }} 
+  #               resourceGroupName: ${{ variables.tstResourceGroupName }}
+  # - stage: Prd
+  #   dependsOn: Tst
+  #   jobs:
+  #   - deployment: Prd_Deploy
+  #     pool:
+  #       vmImage: 'windows-latest'
+  #     environment: ${{ variables.prdEnvironmentName }}
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           - template: deploy-bicep.yml
+  #             parameters:
+  #               environmentName: ${{ variables.prdEnvironmentName }}
+  #               pathToInfrastructureDirectory: ${{ variables.pathtoInfrastructureDirectory }}
+  #               pathToBicepEnvironmentVariablesDirectory: ${{ variables.pathToBicepEnvironmentVariablesDirectory }}
+  #               serviceConnectionName: ${{ variables.prdServiceConnectionName }}
+  #               resourceGroupName: ${{ variables.prdResourceGroupName }}

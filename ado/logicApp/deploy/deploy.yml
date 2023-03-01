@@ -1,0 +1,16 @@
+parameters:
+  - name: logicAppName
+  - name: artifactName
+  - name: serviceConnectionName
+  - name: logicAppBuildPipelineLabel
+
+steps:
+  - template: ../../printEnv.yml
+  - task: AzureWebApp@1
+    displayName: Deploy WebApp
+    inputs:
+      azureSubscription: ${{ parameters.serviceConnectionName }}
+      appName: ${{ parameters.logicAppName }}
+      package: $(Pipeline.Workspace)/${{ parameters.logicAppBuildPipelineLabel }}/${{ parameters.artifactName}}/*.zip
+      appType: webApp
+      deploymentMethod: runFromPackage

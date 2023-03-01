@@ -1,0 +1,62 @@
+name: deploy-webapp
+variables:
+  - template: ../../global.yml
+  - template: ../../bicep/env/dev.yml
+  # - template: ../../bicep/env/tst.yml
+  # - template: ../../bicep/env/prd.yml
+trigger: none 
+resources:
+  pipelines:
+  - pipeline: build-logicapp
+    source: build-logicapp
+stages:
+  - stage: Dev
+    jobs:
+    - deployment: Dev_Deploy
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: ${{ variables.devEnvironmentName }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: deploy.yml
+              parameters:
+                artifactName: ${{ variables.artifactName }}
+                serviceConnectionName: ${{ variables.devServiceConnectionName }}
+                logicAppName: ${{ variables.devLogicAppName }}
+                logicAppBuildPipelineLabel: ${{ variables.logicAppBuildPipelineLabel }}
+  # - stage: Tst
+  #   dependsOn: Dev
+  #   jobs:
+  #   - deployment: Tst_Deploy
+  #     pool:
+  #       vmImage: 'ubuntu-latest'
+  #     environment: ${{ variables.tstEnvironmentName }}
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           - template: deploy.yml
+  #             parameters:
+  #               artifactName: ${{ variables.artifactName }}
+  #               serviceConnectionName: ${{ variables.tstServiceConnectionName }}
+  #               appServiceName: ${{ variables.tstAppServiceName }}
+  #               webAppBuildPipelineLabel: ${{ variables.webAppBuildPipelineLabel }}
+  # - stage: Prd
+  #   dependsOn: Tst 
+  #   jobs:
+  #   - deployment: Prd_Deploy
+  #     pool:
+  #       vmImage: 'ubuntu-latest'
+  #     environment: ${{ variables.prdEnvironmentName }}
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           - template: deploy.yml
+  #             parameters:
+  #               artifactName: ${{ variables.artifactName }}
+  #               serviceConnectionName: ${{ variables.prdServiceConnectionName }}
+  #               appServiceName: ${{ variables.prdAppServiceName }}
+  #               webAppBuildPipelineLabel: ${{ variables.webAppBuildPipelineLabel }}

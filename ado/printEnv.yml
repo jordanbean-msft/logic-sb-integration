@@ -1,0 +1,12 @@
+steps:
+  - pwsh: gci env:* | sort-object name
+    displayName: Print environment variables      
+  - pwsh: tree /F
+    displayName: Print directory tree
+  # - script: |
+  #     env | sort
+  #   displayName: Print environment variables
+  # - script: |
+  #     sudo apt-get install -qq -y tree
+  #     tree
+  #   displayName: Print directory tree

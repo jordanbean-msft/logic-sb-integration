@@ -1,0 +1,17 @@
+parameters:
+ - name: configuration
+ - name: artifactName
+ - name: pathToLogicAppProjectDirectory
+
+steps:
+  - template: ../../printEnv.yml
+  - task:  ArchiveFiles@2
+    displayName: 'Archive files'
+    inputs:
+      rootFolderOrFile: ${{ parameters.pathToLogicAppProjectDirectory }}
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/${{ parameters.artifactName }}.zip
+      replaceExistingArchive: true
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: ${{ parameters.artifactName }}

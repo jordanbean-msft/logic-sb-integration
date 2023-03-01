@@ -1,0 +1,83 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "For_each": {
+        "type": "Foreach",
+        "foreach": "@triggerBody()?['ContentData']",
+        "actions": {
+          "Parse_JSON": {
+            "type": "ParseJson",
+            "inputs": {
+              "content": "@items('For_each')",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "approverEmail": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "correlationId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "runAfter": {}
+          },
+          "Send_an_email_(V2)": {
+            "type": "ApiConnection",
+            "inputs": {
+              "host": {
+                "connection": {
+                  "referenceName": "office365"
+                }
+              },
+              "method": "post",
+              "body": {
+                "To": "@body('Parse_JSON')?['approverEmail']",
+                "Subject": "Approval Needed",
+                "Body": "<p>Content: @{body('Parse_JSON')?['content']}<br>\n<br>\nCorrelationId: @{body('Parse_JSON')?['correlationId']}</p>",
+                "Importance": "Normal"
+              },
+              "path": "/v2/Mail"
+            },
+            "runAfter": {
+              "Parse_JSON": ["Succeeded"]
+            }
+          }
+        },
+        "runAfter": {}
+      }
+    },
+    "triggers": {
+      "When_one_or_more_messages_arrive_in_a_queue_(peek-lock)": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "servicebus"
+            }
+          },
+          "method": "get",
+          "path": "/@{encodeURIComponent(encodeURIComponent('approval-queue'))}/messages/batch/head/peek",
+          "queries": {
+            "maxMessageCount": 20,
+            "queueType": "Main",
+            "sessionId": "None"
+          }
+        },
+        "recurrence": {
+          "frequency": "Second",
+          "interval": 15
+        },
+        "splitOn": "@triggerBody()"
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {}
+  },
+  "kind": "Stateful"
+}
