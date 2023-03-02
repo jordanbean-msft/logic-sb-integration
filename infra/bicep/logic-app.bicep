@@ -64,7 +64,6 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
   location: location
   kind: 'functionapp,workflowapp'
   dependsOn: [
-    storageAccount
     fileShare
     storageAccountConnectionStringSecret
   ]
@@ -121,6 +120,10 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: 'node'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
