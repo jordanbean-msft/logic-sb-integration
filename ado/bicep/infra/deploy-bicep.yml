@@ -12,7 +12,7 @@ steps:
   - task: AzureCLI@2
     inputs:
       azureSubscription: ${{ parameters.serviceConnectionName }}
-      scriptType: 'bash'
+      scriptType: ps
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create -g ${{ parameters.resourceGroupName }} --template-file ${{ parameters.pathToInfrastructureDirectory }}/main.bicep --parameters ${{ parameters.pathToBicepEnvironmentVariablesDirectory }}/${{ parameters.environmentName }}.parameters.json
