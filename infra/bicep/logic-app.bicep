@@ -123,10 +123,6 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
           value: 'node'
         }
         {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
-        }
-        {
           name: 'WEBSITE_CONTENTSHARE'
           value: fileShareName
         }
