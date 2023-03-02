@@ -5,7 +5,6 @@ variables:
   # - template: ../env/tst.yml
   # - template: ../env/prd.yml
   - template: variables.yml
-  - group: ${{ variables.devEnvironmentName }}
 trigger:
   branches:
     include: 
