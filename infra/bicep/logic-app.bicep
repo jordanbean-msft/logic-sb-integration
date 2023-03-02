@@ -81,56 +81,27 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
       netFrameworkVersion: 'v4.0'
       functionsRuntimeScaleMonitoringEnabled: false
       appSettings: [
-        {
-          name: 'APP_KIND'
-          value: 'workflowApp'
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: appInsights.properties.InstrumentationKey
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: appInsights.properties.ConnectionString
-        }
-        {
-          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-          value: '~3'
-        }
-        {
-          name: 'ServiceBus-ConnectionString'
-          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${serviceBusConnectionStringSecretName})'
-        }
-        {
-          name: 'office365-connectionKey'
-          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${office365ConnectionKeySecretName})'
-        }
-        {
-          name: 'XDT_MicrosoftApplicationInsights_Mode'
-          value: 'Recommended'
-        }
-        {
-          name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~4'
-        }
-        {
-          name: 'AzureWebJobsStorage'
-          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
-        }
-        {
-          name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'node'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
-        }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: fileShareName
-        }
+
       ]
     }
+  }
+}
+
+resource logicAppAppConfigSettings 'Microsoft.Web/sites/config@2022-03-01' = {
+  name: '${logicApp.name}/appsettings'
+  properties: {
+    APP_KIND: 'workflowApp'
+    APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+    ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
+    'ServiceBus-ConnectionString': '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${serviceBusConnectionStringSecretName})'
+    'office365-connectionKey': '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${office365ConnectionKeySecretName})'
+    XDT_MicrosoftApplicationInsights_Mode: 'Recommended'
+    FUNCTIONS_EXTENSION_VERSION: '~4'
+    AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
+    FUNCTIONS_WORKER_RUNTIME: 'node'
+    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
+    WEBSITE_CONTENTSHARE: fileShareName
   }
 }
 
