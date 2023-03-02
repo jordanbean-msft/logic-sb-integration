@@ -18,7 +18,7 @@ stages:
     jobs:
       - job: Build
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'windows-latest'
         steps:
           - template: build.yml
             parameters:
