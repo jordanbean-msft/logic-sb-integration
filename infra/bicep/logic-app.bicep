@@ -66,6 +66,7 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
   dependsOn: [
     storageAccount
     fileShare
+    storageAccountConnectionStringSecret
   ]
   identity: {
     type: 'UserAssigned'
