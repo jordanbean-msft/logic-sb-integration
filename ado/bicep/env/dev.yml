@@ -1,5 +1,5 @@
 variables:
   devEnvironmentName: dev
   devResourceGroupName: rg-logicSbInteg-ussc-bicep
-  devServiceConnectionName: jordanbean-msft
+  devServiceConnectionName: jordan-bean-demo-subscription
   devLogicAppName: logic-logicSbInteg-ussc-bicep
