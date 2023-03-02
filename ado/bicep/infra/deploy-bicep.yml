@@ -4,8 +4,6 @@ parameters:
   - name: pathToBicepEnvironmentVariablesDirectory
   - name: serviceConnectionName
   - name: resourceGroupName
-  - name: administratorLogin
-  - name: administratorLoginPassword
   
 steps:
   - checkout: self
@@ -17,4 +15,4 @@ steps:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az deployment group create -g ${{ parameters.resourceGroupName }} --template-file ${{ parameters.pathToInfrastructureDirectory }}/main.bicep --parameters ${{ parameters.pathToBicepEnvironmentVariablesDirectory }}/${{ parameters.environmentName }}.parameters.json --parameters administratorLogin=${{ parameters.administratorLogin }} administratorLoginPassword=${{ parameters.administratorLoginPassword }}
+        az deployment group create -g ${{ parameters.resourceGroupName }} --template-file ${{ parameters.pathToInfrastructureDirectory }}/main.bicep --parameters ${{ parameters.pathToBicepEnvironmentVariablesDirectory }}/${{ parameters.environmentName }}.parameters.json
