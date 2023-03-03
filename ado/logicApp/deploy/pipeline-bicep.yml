@@ -1,4 +1,4 @@
-name: deploy-webapp
+name: deploy-logic-app
 variables:
   - template: ../../global.yml
   - template: ../../bicep/env/dev.yml

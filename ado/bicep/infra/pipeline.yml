@@ -1,4 +1,4 @@
-name: deploy-infrastructure
+name: deploy-infra
 variables:
   - template: ../../global.yml
   - template: ../env/dev.yml

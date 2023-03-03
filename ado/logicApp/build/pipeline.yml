@@ -1,4 +1,4 @@
-name: build-webapp
+name: build-logic-app
 variables:
   - template: ../../global.yml
   - template: variables.yml
