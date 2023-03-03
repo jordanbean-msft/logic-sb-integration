@@ -5,4 +5,4 @@ variables:
   subscriptionId: cfa014c2-6565-444f-8241-b3edd39a2a44
   tenantId: 4abfaf16-9535-4531-85a9-c85268607bae
   logicAppProjectDirectoryName: logicAppSrc
-  logicAppBuildPipelineLabel: build-webapp
+  logicAppBuildPipelineLabel: build-logic-app
