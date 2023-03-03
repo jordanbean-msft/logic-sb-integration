@@ -7,8 +7,8 @@ variables:
 trigger: none 
 resources:
   pipelines:
-  - pipeline: build-logicapp
-    source: build-logicapp
+  - pipeline: build-logic-app
+    source: build-logic-app
 stages:
   - stage: Dev
     jobs:

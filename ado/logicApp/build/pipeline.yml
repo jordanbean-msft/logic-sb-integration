@@ -3,7 +3,7 @@ variables:
   - template: ../../global.yml
   - template: variables.yml
     parameters:
-      webAppSolutionName: ${{ variables.webAppSolutionName }}
+      logicAppProjectDirectoryName: ${{ variables.logicAppProjectDirectoryName }}
 trigger:
   branches:
     include: 
